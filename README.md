@@ -19,7 +19,7 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline for 
 
 ## 📂 Project Structure
 ```
-files\_for\_docling/
+files_for_docling
 ├── app.py               # Streamlit app (frontend + retrieval logic)
 ├── databaselogic.py     # Database creation + document processing
 ├── requirements.txt     # Dependencies list
@@ -27,15 +27,15 @@ files\_for\_docling/
 ````
 - databaselogic.py: Contains the code for setting up the LanceDB database, processing documents (HTML and PDF) using Docling for chunking and conversion, and populating the database with document chunks and their embeddings.
 - app.py: The Streamlit application that provides a user interface for asking questions about the documents stored in the LanceDB database. It retrieves relevant document chunks based on the user's query and uses a language model (Gemini) to generate answers based on the retrieved context.
-- requirnments.txt: Lists the Python dependencies required to run the project.
+- requirements.txt: Lists the Python dependencies required to run the project.
 ---
 
 ## 🛠 Installation
 
 ### 1️⃣ Clone the repository
 
-git clone https://github.com/your-username/docling-rag.git
-cd docling-rag/files_for_docling
+git clone https://github.com/Pritam11-web/docling-rag.git
+cd files_for_docling
 
 
 ### 2️⃣ Install dependencies
@@ -137,14 +137,9 @@ MIT License – free to use, modify, and distribute.
 
 ## 🙋‍♂️ Author
 
-Made by **Your Name**
-📧 Email: [your.email@example.com](mailto:your.email@example.com)
+Made by **Pritam Saha**
+📧 Email: [pritamsaha1109@gmail.com](mailto:pritamsaha1109@gmail.com)
 
 ```
 
----
 
-If you **copy-paste this exactly** into a file called `README.md` in your repo, it will display perfectly on GitHub or any Markdown viewer.
-
-If you want, I can also **add screenshot placeholders** in this README so your GitHub page looks even more professional. That usually makes project READMEs stand out. Would you like me to add those?
-```
