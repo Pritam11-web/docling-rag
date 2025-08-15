@@ -20,10 +20,10 @@ This project implements a **Retrieval-Augmented Generation (RAG)** pipeline for 
 ## 📂 Project Structure
 ```
 files_for_docling
-├── app.py               # Streamlit app (frontend + retrieval logic)
-├── databaselogic.py     # Database creation + document processing
-├── requirements.txt     # Dependencies list
-└── README.md            # This file
+├── app.py               
+├── databaselogic.py     
+├── requirements.txt     
+└── README.md            
 ````
 - databaselogic.py: Contains the code for setting up the LanceDB database, processing documents (HTML and PDF) using Docling for chunking and conversion, and populating the database with document chunks and their embeddings.
 - app.py: The Streamlit application that provides a user interface for asking questions about the documents stored in the LanceDB database. It retrieves relevant document chunks based on the user's query and uses a language model (Gemini) to generate answers based on the retrieved context.
@@ -34,14 +34,17 @@ files_for_docling
 
 ### 1️⃣ Clone the repository
 
+```bash
 git clone https://github.com/Pritam11-web/docling-rag.git
 cd files_for_docling
+```
 
 
 ### 2️⃣ Install dependencies
 
-
+```python
 pip install -r requirements.txt
+```
 
 
 ---
@@ -97,23 +100,64 @@ Then open the displayed local URL in your browser.
 
 1. Upload all project files into your Colab working directory.
 2. Install dependencies:
-
    ```python
    !pip install -r files_for_docling/requirements.txt
-   ```
-3. Set Colab secrets for:
 
-   * `GOOGLE_API_KEY`
-   * `HF_TOKEN`
-   * `NGROK_AUTH_TOKEN`
-4. Run `databaselogic.py` to build your LanceDB.
-5. Run `app.py` via Ngrok tunnel:
+3. Install **pyngrok**:
 
    ```python
-   public_url = ngrok.connect(addr="8501", proto="http")
-   !streamlit run files_for_docling/app.py --server.port 8501
+   !pip install pyngrok
    ```
-6. Open the `public_url` in your browser.
+
+4. Store secrets in Colab:
+
+   * Go to **Colab** → **Tools** → **Secrets**.
+   * Add the following:
+
+     * `NGROK_AUTH_TOKEN` = *your ngrok token* (from [https://dashboard.ngrok.com/get-started/your-authtoken](https://dashboard.ngrok.com/get-started/your-authtoken))
+     * `GOOGLE_API_KEY` = *your Google API key*
+
+5. Start ngrok tunnel and launch Streamlit:
+
+   ```python
+   from pyngrok import ngrok
+   from google.colab import userdata
+   import os, subprocess, time
+
+   # Load secrets
+   os.environ["GOOGLE_API_KEY"] = userdata.get("GOOGLE_API_KEY")
+   ngrok.set_auth_token(userdata.get("NGROK_AUTH_TOKEN"))
+
+   # Kill old tunnels (if any)
+   ngrok.kill()
+
+   # Start tunnel
+   public_url = ngrok.connect(addr="8501", proto="http")
+   print(f"Streamlit app URL: {public_url}")
+
+   # Run Streamlit
+   process = subprocess.Popen(
+       ['streamlit', 'run', 'files_for_docling/app.py', '--server.port', '8501'],
+       env=os.environ
+   )
+
+   time.sleep(5)
+   if process.poll() is None:
+       print("✅ Streamlit is running...")
+   else:
+       print("❌ Failed to start Streamlit.")
+   ```
+
+6. Open the **public URL** printed above in your browser to access the app.
+
+7. To build your LanceDB, run:
+
+   ```python
+   !python files_for_docling/databaselogic.py
+   ```
+
+
+
 
 ---
 
@@ -140,6 +184,5 @@ MIT License – free to use, modify, and distribute.
 Made by **Pritam Saha**
 📧 Email: [pritamsaha1109@gmail.com](mailto:pritamsaha1109@gmail.com)
 
-```
 
 
